@@ -9,13 +9,29 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@types/react": "~18.2.79",
+    "axios": "^1.7.7",
     "expo": "~51.0.28",
     "expo-status-bar": "~1.12.1",
+    "near-api-js": "^4.0.4",
     "react": "18.2.0",
-    "react-native": "0.74.5"
+    "react-native": "0.74.5",
+    "typescript": "~5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
   },
-  "private": true
+  "private": true,
+  "description": "Backend for TustID using Near blockchain",
+  "repository": {
+    "type": "git",
+    "url": "github.com/yusufdimari/trustid.git"
+  },
+  "keywords": [
+    "TrustID",
+    "Near",
+    "Nearjs"
+  ],
+  "author": "yusufdimari",
+  "license": "ISC"
 }
