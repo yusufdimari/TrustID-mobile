@@ -1,51 +1,43 @@
-import { Button, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { DIDDocument } from "../types/types";
-import axios, { Axios, AxiosError, AxiosResponse } from "axios";
+import { Modal, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import useApi from "../utils/useApi";
+import AddDoc from "./AddDoc";
+import Button from "../components/Button";
+import ViewDoc from "./ViewDoc";
 
 export default function Dashboard() {
-  const [did, setDid] = useState<DIDDocument | null>(null);
-  //   const { getDID } = useApi();
+  const { getAllDocs, docs } = useApi();
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [viewDIDs, setViewDIDs] = useState<boolean>(false);
 
-  const getdids = async () => {
-    axios
-      .get("http://10.206.78.116:5005/TrustID/v1/documents")
-      .then((res: AxiosResponse) => console.log(res.data))
-      .catch((err: AxiosError) => console.error(err.response.data));
+  useEffect(() => {
+    getAllDocs();
+  }, [isVisible, viewDIDs]);
+
+  //to add a new DID
+  const toggleVisible = () => {
+    setIsVisible(!isVisible);
   };
 
-  //   const handlePress = async () => {
-  //     const fdata = {
-  //       creatorAccountId: "yusufdimari.testnet",
-  //       newAccountId: "yusuftest.testnet",
-  //     };
-  //     axios
-  //       .post("http://10.206.78.116:5005/TrustID/v1/accounts/create-account", {
-  //         data: fdata,
-  //       })
-  //       .then((res: AxiosResponse) => console.log(res.data))
-  //       .catch((err: AxiosError) => console.error(err.response.data));
-  //     return fdata;
-  //   };
-  const handlePress = async (
-    fdata: DIDDocument = {
-      publicKey: "ed25519:4JZG85QAd98W1ZWBCDFf5uL1KpmjwQsH6eJQEtyTLn4E",
-      serviceEndpoint: "NA",
-    }
-  ): Promise<DIDDocument> => {
-    axios
-      .post("http://10.206.78.116:5005/TrustID/v1/documents/", {
-        data: fdata,
-      })
-      .then((res: AxiosResponse) => console.log(res.data))
-      .catch((err: AxiosError) => console.error(err.response.data));
-    return fdata;
-  };
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Hello</Text>
-      <Button title="Get DID" onPress={() => getdids()} />
-      <Button title="Add DID" onPress={() => handlePress()} />
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 20,
+        backgroundColor: "#e3e3e3",
+      }}
+    >
+      <Text>Decentralized ID</Text>
+      <Modal visible={isVisible} animationType="fade">
+        <AddDoc setIsVisible={setIsVisible} />
+      </Modal>
+      <Modal visible={viewDIDs} animationType="fade">
+        <ViewDoc setIsVisible={setViewDIDs} data={docs} />
+      </Modal>
+      <Button title="View DIDs" onPress={() => setViewDIDs(true)} />
+      <Button title="Add New DID" onPress={toggleVisible} />
     </View>
   );
 }

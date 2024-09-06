@@ -13,6 +13,11 @@ export interface DIDContractMethods {
 
 export interface DIDDocument {
   id?: string;
+  firstName: string;
+  middleName?: string;
+  lastName: string;
   publicKey: string;
+  phone: string;
+  email: string;
   serviceEndpoint: string;
 }
